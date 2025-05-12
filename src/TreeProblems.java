@@ -1,5 +1,10 @@
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
 
 public class TreeProblems {
 
@@ -28,6 +33,17 @@ public class TreeProblems {
    If the root is null, do nothing.
    */
   public static <T> void postOrder(Node<T> root) {
+    if(root == null) return;
+
+    
+    if(root.children != null){
+      if(root.children == null) return;
+        for (Node<T> node : root.children) {
+          postOrder(node);
+      }
+    }
+
+    System.out.println(root.value);
   }
 
   /*
@@ -55,6 +71,16 @@ public class TreeProblems {
    5
    */
   public static <T> void postOrder(Map<T, List<T>> tree, T root) {
+    if(tree == null || !tree.containsKey(root)) return;
+
+
+    List<T> children = tree.get(root);
+    if(children != null){
+      for (T child : children) {
+        postOrder(tree, child);
+      }
+    }
+    System.out.println(root);
   }
 
   /*
@@ -72,7 +98,17 @@ public class TreeProblems {
    A null tree should return 0
   */
   public static int sumTree(Node<Integer> root) {
-    return -1;
+    if(root == null) return 0;
+    int sum = 0;
+
+
+    if(root.children != null){
+      for(Node<Integer> node : root.children) {
+        sum += sumTree(node);
+      }
+    }
+    
+    return sum + root.value;
   }
 
   /*
@@ -95,7 +131,12 @@ public class TreeProblems {
    Hint: There's a simple way to do this!
   */
   public static int sumTree(Map<Integer, List<Integer>> tree) {
-    return -1;
+    if(tree == null ) return 0;
+    int sum = 0;
+    for (int num : tree.keySet()) {
+      sum += num;
+    }
+    return sum;
   }
 
   /*
@@ -118,7 +159,13 @@ public class TreeProblems {
    Hint: No recursion needed! Think about how you would do this by hand.
   */
   public static <T> T findRoot(Map<T, List<T>> tree) {
-    return null;
+    List<T> set = new ArrayList<T>(tree.keySet());
+    for (List<T> list : tree.values()) {
+      for(T val : list){
+        if(set.contains(val)) set.remove(val);
+      }
+    }
+    return set.get(0);
   }
 
   /*
